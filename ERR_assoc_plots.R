@@ -1,6 +1,8 @@
 library(ggplot2)
 library(stringr)
 library(wesanderson)
+library(patchwork)
+
 assoc_results <- read.table("plink.qassoc",header=TRUE)
 #only keep big chromosomes:
 fai <- read.delim("Schistosoma_mansoni_v7.fa.fai",header=FALSE)
@@ -31,13 +33,6 @@ assoc_results_trim2 <- merge(assoc_results_trim,chr_sizes,by="CHR")
 ggplot(assoc_results_trim2,aes(x=BP+START,y=-log(P,10),color=CHR)) + geom_point(size=2,alpha=0.5)  + theme_bw() + xlab("genomic position") + ylab("-log10(P)") + scale_color_manual(values=rep(wes_palette("Royal1",2),4)) 
 
 g <- ggplot(assoc_results_trim2,aes(x=BP+START,y=-log(P,10),color=CHR)) + geom_point(size=1.5,alpha=0.5)  + theme_bw() + xlab("genomic position") + ylab("-log10(P)") + scale_color_manual(values=rep(wes_palette("Royal1",2),4)) + scale_x_continuous(breaks=chr_sizes$TICK,labels=chr_sizes$SHORT_NAME)
-cairo_pdf(file="ERR_GWAS_Manhattan.pdf",onefile=FALSE)
-g
-dev.off()
-
-cairo_png(file="ERR_GWAS_Manhattan.png")
-g
-dev.off()
 
 
 #--- function of qqplots from https://gist.github.com/slowkow/9041570
@@ -68,10 +63,12 @@ gg_qqplot <- function(ps, ci = 0.95) {
 
 
 g2 <- gg_qqplot(assoc_results$P) + theme_bw()
-cairo_pdf(file="ERR_GWAS_QQ.pdf",onefile=FALSE)
-g2
+
+
+cairo_pdf(file="ERR_GWAS_combined.pdf",onefile=FALSE)
+g + g2
 dev.off()
 
-png(file="ERR_GWAS_QQ.png")
-g2 
+png(file="ERR_GWAS_combined.png")
+g + g2
 dev.off()
