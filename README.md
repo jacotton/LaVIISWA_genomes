@@ -23,3 +23,8 @@ This also reads [Schistosoma_mansoni_v7.fa.fai](Schistosoma_mansoni_v7.fa.fai), 
 
 > samtools faidx Schistosoma_mansoni_v7.fa
 
+### analysis of between-site Fst and gravity model
+
+original data is [fst_villages_3.csv](fst_villages_3.csv)
+
+Code to fit these models and some brief explanation, together with code to reproduce figure 4 and S2 figure in the manuscript are in [GravityModel.R](GravityModel.R)
